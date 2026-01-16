@@ -127,15 +127,3 @@ local-hybrid-RAG-system/
 ├── .gitignore
 └── LICENSE
 
-## ⚙️ Setup Instructions
-
-### 1️⃣ Clone the repository
-```bash
-git clone https://github.com/Haripranay22/local-hybrid-RAG-system.git
-cd local-hybrid-RAG-system
-
-### 2️⃣ Create virtual environment
-```bash
-python3 -m venv .venv
-source .venv/bin/activate
-

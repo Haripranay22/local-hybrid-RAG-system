@@ -42,27 +42,34 @@ This project implements a **local, hybrid Retrieval-Augmented Generation (RAG) a
 User Query
 │
 ▼
+
 Streamlit UI
 │
 ▼
+
 Query Embedding
 (SentenceTransformer)
 │
 ▼
+
 Hybrid Retrieval (OpenSearch)
 ├── Dense Vector Search (kNN)
 └── Sparse Keyword Search (BM25)
 │
 ▼
+
 Top-K Relevant Context Chunks
 │
 ▼
+
 Prompt Construction
 │
 ▼
+
 Ollama (Local LLM - llama3)
 │
 ▼
+
 Final Answer
 
 ### Component Breakdown

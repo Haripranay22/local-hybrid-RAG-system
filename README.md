@@ -1,27 +1,141 @@
-# 📝 Build Your Local RAG System with LLMs
+# Local Hybrid RAG System (OpenSearch + Ollama)
 
-Welcome to the **Local LLM-based Retrieval-Augmented Generation (RAG) System**! This repository provides the full code to build a private, offline RAG system for managing and querying personal documents locally using a combination of OpenSearch, Sentence Transformers, and Large Language Models (LLMs). Perfect for anyone seeking a privacy-friendly solution to manage documents without relying on cloud services.
+A fully local **Hybrid Retrieval-Augmented Generation (RAG)** system that combines
+**semantic vector search + keyword search** using **OpenSearch**, and generates
+responses using **Ollama-hosted LLMs**, wrapped in an interactive **Streamlit UI**.
 
-![Demo Image](images/chatbot.png)
-
-### 🌟 Key Features:
-- **Privacy-Friendly Document Search:** Search through personal documents without uploading them to the cloud.
-- **Hybrid Search with OpenSearch:** Uses both traditional text matching and semantic search.
-- **Easy Integration with LLMs**: Leverage local LLMs for personalized, context-aware responses.
-
-### 🚀 Get Started
-1. Clone the repo: `git clone https://github.com/JAMwithAI/build_your_local_RAG_system.git`
-2. Install dependencies: `pip install -r requirements.txt`
-3. Configure `constants.py` for embedding models and OpenSearch settings.
-4. Run the Streamlit app: `streamlit run welcome.py`
-
-### 📘 Blog Guide
-For a detailed walkthrough of the setup and code, check out our blog:
-
-[**Build a Local LLM-based RAG System for Your Personal Documents - Part 1**](https://jamwithai.substack.com/p/build-a-local-llm-based-rag-system)
-
-[**Build a Local LLM-based RAG System for Your Personal Documents - Part 2: The Guide**](https://jamwithai.substack.com/p/build-a-local-llm-based-rag-system-628)
+This project demonstrates how to build a **production-style, local-first RAG pipeline**
+without relying on external cloud LLM APIs.
 
 ---
 
-Enjoy your journey in building a private, AI-driven document management system! If you find this project useful, consider sharing it with others in the community!
+## 🚀 Features
+
+- 🔍 **Hybrid Search**
+  - Dense vector search (Sentence Transformers embeddings)
+  - Sparse keyword search (BM25)
+  - Combined relevance scoring using OpenSearch
+
+- 🤖 **Local LLM Inference**
+  - Uses **Ollama** (e.g. `llama3:latest`)
+  - No OpenAI / cloud dependency
+
+- 📄 **Document Ingestion**
+  - Upload PDFs
+  - Chunking + embedding
+  - Indexed into OpenSearch
+
+- 🧠 **RAG Mode Toggle**
+  - Enable / disable RAG at query time
+  - Adjustable context window size
+
+- 🖥️ **Streamlit UI**
+  - Chat interface
+  - Upload documents
+  - Temperature control
+  - Search result tuning
+
+---
+
+## 🧠 Architecture Overview
+This project implements a **local, hybrid Retrieval-Augmented Generation (RAG) architecture** that combines semantic vector search with keyword-based retrieval, followed by local LLM inference.    
+User Query
+│
+▼
+Streamlit UI
+│
+▼
+Query Embedding
+(SentenceTransformer)
+│
+▼
+Hybrid Retrieval (OpenSearch)
+├── Dense Vector Search (kNN)
+└── Sparse Keyword Search (BM25)
+│
+▼
+Top-K Relevant Context Chunks
+│
+▼
+Prompt Construction
+│
+▼
+Ollama (Local LLM - llama3)
+│
+▼
+Final Answer
+
+### Component Breakdown
+
+- **Streamlit UI**
+  - Handles user interaction, document uploads, and configuration controls.
+
+- **Embedding Layer**
+  - Converts user queries and document chunks into dense vector representations using Sentence Transformers.
+
+- **OpenSearch Hybrid Retrieval**
+  - Performs:
+    - kNN vector similarity search for semantic relevance
+    - BM25 keyword search for exact term matching
+  - Combines both signals to retrieve the most relevant context.
+
+- **Context Window Builder**
+  - Selects top-k retrieved chunks and formats them into a structured prompt.
+
+- **Ollama LLM**
+  - Runs a fully local LLM (`llama3`) to generate grounded responses based on retrieved context.
+
+- **Response Generation**
+  - Produces final answers with reduced hallucination by grounding responses in retrieved documents.
+
+---
+
+This architecture enables **cloud-free, privacy-preserving, and production-style RAG workflows** entirely on a local machine.
+
+
+---
+
+## 🧩 Tech Stack
+
+| Layer | Technology |
+|-----|-----------|
+| UI | Streamlit |
+| LLM | Ollama (`llama3`) |
+| Search Engine | OpenSearch |
+| Embeddings | `sentence-transformers/all-mpnet-base-v2` |
+| Language | Python 3.12 |
+| OS Support | Linux / WSL |
+
+---
+
+## 📂 Project Structure
+
+```text
+local-hybrid-RAG-system/
+├── Welcome.py               # Streamlit entry point
+├── pages/                   # UI pages (Chatbot, Upload)
+├── src/                     # Core RAG logic
+│   ├── chat.py
+│   ├── embeddings.py
+│   ├── opensearch_client.py
+│   └── constants.py
+├── notebooks/               # Experiments & exploration
+├── images/                  # UI screenshots
+├── requirements.txt
+├── pyproject.toml
+├── README.md
+├── .gitignore
+└── LICENSE
+
+## ⚙️ Setup Instructions
+
+### 1️⃣ Clone the repository
+```bash
+git clone https://github.com/Haripranay22/local-hybrid-RAG-system.git
+cd local-hybrid-RAG-system
+
+### 2️⃣ Create virtual environment
+```bash
+python3 -m venv .venv
+source .venv/bin/activate
+
